@@ -6,14 +6,14 @@
 !-----------------------------------------------------------------------
 
       real*4, pointer :: ampl(:,:), phase(:,:), freq(:)
-      real*4, pointer :: amp37(:,:), pha37(:,:)
+      real*4, pointer :: amp38(:,:), pha38(:,:)
       real*4, pointer :: lon(:), lat(:), depth(:)
-      real*4 nodefactor,equilarg,freq37(37),wavespeed37(37)
+      real*4 nodefactor,equilarg,freq38(38),wavespeed38(38)
       integer, pointer :: nm(:,:), match(:)
       integer ncid,ne,np,nfreq,nnodes,n,num,nface,ntype,nvrt
       character*10, pointer :: freqname(:)
       character*80 netcdf_file*80, gridtitle*24, tide_analysis*24
-      character freqname37(37)*10
+      character freqname38(38)*10
       character globalstr(9)*40
       parameter (pi = 3.1415926535897932)
 
@@ -22,22 +22,22 @@
      & 'ADCIRC refined grid inversion',&
      & 'meton:NASUSER/emyers',&
      & 'NOAA/NOS/OCS/CSDL/MMAP','original','edward.myers@noaa.gov'/
-      data freqname37/'M2','S2','N2','K1','M4','O1','M6','MK3','S4',&
+      data freqname38/'M2','S2','N2','K1','M4','O1','M6','MK3','S4',&
      & 'MN4','NU2','S6','MU2','2N2','OO1','LAM2','S1','M1','J1',&
      & 'MM','SSA','SA','MSF','MF','RHO','Q1','T2','R2','2Q1','P1',&
      & '2SM2','M3','L2','2MK3','K2','M8','MS4'/
-      data wavespeed37/28.9841042,30.0000000,28.4397295,15.0410686,&
+      data wavespeed38/28.9841042,30.0000000,28.4397295,15.0410686,&
      & 57.9682084,13.9430356,86.9523127,44.0251729,60.0000000,&
-     & 57.4238337,28.5125831,90.0000000,27.9682084,27.8953548,&
+     & 57.4238338,28.5125831,90.0000000,27.9682084,27.8953548,&
      & 16.1391017,29.4556253,15.0000000,14.4966939,15.5854433,&
-     & 0.5443747,0.0821373,0.0410686,1.0158958,1.0980331,13.4715145,&
+     & 0.5443847,0.0821383,0.0410686,1.0158958,1.0980331,13.4715145,&
      & 13.3986609,29.9589333,30.0410667,12.8542862,14.9589314,&
-     & 31.0158958,43.4761563,29.5284789,42.9271398,30.0821373,&
+     & 31.0158958,43.4761563,29.5284789,42.9271398,30.0821383,&
      & 115.9364166,58.9841042/
 
-      do i=1,37
-        freq37(i)=(wavespeed37(i)*pi/180.0)/3600.0
-        freqname37(i)(10:10)=char(0)
+      do i=1,38
+        freq38(i)=(wavespeed38(i)*pi/180.0)/3600.0
+        freqname38(i)(10:10)=char(0)
       end do
 
       if (globalstr(1) == "Triangular") then
@@ -74,13 +74,13 @@
       allocate(match(nfreq))
       write(*,*) 'np =',np
       allocate(ampl(nfreq,np),phase(nfreq,np))
-      allocate(amp37(37,np),pha37(37,np))
+      allocate(amp38(38,np),pha38(38,np))
 3679  format(1x,e20.10,1x,f10.7,1x,f12.8,2x,a10)
       do i=1,nfreq
         read(53,3679)freq(i),nodefactor,equilarg,freqname(i)
         write(*,*) i,freq(i),freqname(i)
       end do
-      call match_to_nos37(nfreq,freqname,match)
+      call match_to_nos38(nfreq,freqname,match)
       read(53,*)nnodes
       write(*,*) 'nnodes=',nnodes
       if (nnodes/=np) then
@@ -88,16 +88,16 @@
         stop
       endif
       do i=1,nnodes
-        do j=1,37
-          amp37(j,i)=-99999.0
-          pha37(j,i)=-99999.0
+        do j=1,38
+          amp38(j,i)=-99999.0
+          pha38(j,i)=-99999.0
         end do
         read(53,*) num
         do j=1,nfreq
           read(53,*) ampl(j,i),phase(j,i)
           if (match(j)/=-1) then
-            amp37(match(j),i)=ampl(j,i)
-            pha37(match(j),i)=phase(j,i)
+            amp38(match(j),i)=ampl(j,i)
+            pha38(match(j),i)=phase(j,i)
           endif
         end do
       end do
@@ -110,28 +110,28 @@
       write(*,*) 'Time of harmonic analysis is ',time_analysis
       nvrt=1
       call write_tidescdf_fem(netcdf_file,ncid,globalstr,&
-     & ne,nnodes,nvrt,37,nm,lon,lat,depth,freqname37,freq37,&
-     & amp37,pha37,-1.,-1.,-1.,-1.,tide_analysis,time_analysis)
+     & ne,nnodes,nvrt,38,nm,lon,lat,depth,freqname38,freq38,&
+     & amp38,pha38,-1.,-1.,-1.,-1.,tide_analysis,time_analysis)
 
       end
 
 
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
-      subroutine match_to_nos37(nn,iname,imatch)
+      subroutine match_to_nos38(nn,iname,imatch)
 
       character*10 iname(nn)
-      character frname37(37)*10
+      character frname38(38)*10
       integer imatch(nn)
-      data frname37/'M2','S2','N2','K1','M4','O1','M6','MK3','S4',&
+      data frname38/'M2','S2','N2','K1','M4','O1','M6','MK3','S4',&
      & 'MN4','NU2','S6','MU2','2N2','OO1','LAM2','S1','M1','J1',&
      & 'MM','SSA','SA','MSF','MF','RHO','Q1','T2','R2','2Q1','P1',&
      & '2SM2','M3','L2','2MK3','K2','M8','MS4'/
 
       do i=1,nn
         imatch(i)=-1
-        do j=1,37
-          if (iname(i)==frname37(j)) then
+        do j=1,38
+          if (iname(i)==frname38(j)) then
             imatch(i)=j
           endif
         end do

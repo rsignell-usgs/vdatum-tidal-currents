@@ -1,7 +1,7 @@
 #!/bin/bash
 # man sbatch,scancel,srun,salloc,squeue,sinfo,scontrol are your friends
 ### Job name
-#SBATCH -J padcirc-fl_sab
+#SBATCH -J padcirc-FL
 ### Number of nodes
 ###SBATCH -N 1
 ### Number of tasks (cores/cpus for MPI)
@@ -16,7 +16,7 @@
 #SBATCH --mail-type=ALL
 #SBATCH --mail-user=rsignellusgs.gov
 # Combine stdout and stderr in one file (The %j is a macro for JobID)
-#SBATCH --output=%j-padcirc-fl_sab
+#SBATCH --output=%j-padcirc-FL
 
 
 # Modules for Intel compiler

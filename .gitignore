@@ -1,3 +1,12 @@
+*
+!fort.13
+!fort.14
+!fort.15
+!fort.20
+!*.f90
+!*.f
+!makefile
+!*.slurm
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
@@ -7,6 +16,7 @@ __pycache__/
 
 # Distribution / packaging
 .Python
+PE*/
 env/
 build/
 develop-eggs/

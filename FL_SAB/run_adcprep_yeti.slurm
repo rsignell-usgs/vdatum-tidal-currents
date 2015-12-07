@@ -28,8 +28,8 @@ echo ${SLURM_JOB_NODELIST}
 ulimit -c unlimited
 
 # Intel compiled run
-srun --mpi=pmi2 -n 1 /home/rsignell/Models/adcirc/trunk/work/adcprep -np 32 -partmesh
-srun --mpi=pmi2 -n 1 /home/rsignell/Models/adcirc/trunk/work/adcprep -np 32 -prepall
+mpirun /home/rsignell/Models/adcirc/trunk/work/adcprep -np 32 -partmesh 
+mpirun /home/rsignell/Models/adcirc/trunk/work/adcprep -np 32 -prepall 
 
 exit $?
 
